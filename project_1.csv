@@ -1,0 +1,34 @@
+import re
+import math
+
+def calculate_entropy(password):
+    # Shannon Entropy calculation
+    entropy = 0
+    for char in password:
+        entropy += math.log2(len(char))
+    return entropy
+
+def check_complexity(password):
+    # Regex pattern matching
+    patterns = [
+        r"[A-Z]",  # Uppercase
+        r"[a-z]",  # Lowercase
+        r"\d",     # Numbers
+        r"\W"      # Special characters
+    ]
+    return all(re.search(pattern, password) for pattern in patterns)
+
+def assess_password_strength(password):
+    length = len(password)
+    complexity = check_complexity(password)
+    entropy = calculate_entropy(password)
+    
+    if length < 12:
+        return "Weak"
+    elif complexity and entropy > 50:
+        return "Strong"
+    else:
+        return "Medium"
+
+password = input("Enter password: ")
+print(assess_password_strength(password))
